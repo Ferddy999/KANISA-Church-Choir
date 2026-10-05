@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+```
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Admin Dashboard | Church Choir</title>
+
+<link rel="stylesheet" href="css/admin.css">
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+```
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+```
+<!-- =========================
+     SIDEBAR
+========================== -->
+
+<aside class="sidebar">
+
+    <div class="sidebar-logo">
+
+        <div class="dashboard-logo">
+            ✝
+        </div>
+
+        <div>
+
+            <h2>Grace Fellowship</h2>
+
+            <p>Choir Admin</p>
+
+        </div>
+
+    </div>
+
+
+    <nav class="sidebar-nav">
+
+        <a href="/admin/dashboard.html"
+           class="active">
+
+            <i class="fas fa-chart-line"></i>
+
+            Dashboard
+
+        </a>
+
+
+        <a href="/admin/members.html">
+
+            <i class="fas fa-users"></i>
+
+            Members
+
+        </a>
+
+
+        <a href="/admin/songs.html">
+
+            <i class="fas fa-music"></i>
+
+            Songs
+
+        </a>
+
+
+        <a href="/admin/activities.html">
+
+            <i class="fas fa-calendar"></i>
+
+            Activities
+
+        </a>
+
+
+        <a href="/admin/services.html">
+
+            <i class="fas fa-church"></i>
+
+            Services
+
+        </a>
+
+
+        <a href="/admin/gallery.html">
+
+            <i class="fas fa-images"></i>
+
+            Gallery
+
+        </a>
+
+
+        <a href="/admin/settings.html">
+
+            <i class="fas fa-cog"></i>
+
+            Settings
+
+        </a>
+
+    </nav>
+
+
+    <a href="/admin/login.html"
+       class="logout">
+
+        <i class="fas fa-right-from-bracket"></i>
+
+        Logout
+
+    </a>
+
+</aside>
+
+
+
+<!-- =========================
+     MAIN CONTENT
+========================== -->
+
+<main class="main-content">
+
+
+    <!-- HEADER -->
+
+    <header class="dashboard-header">
+
+        <div>
+
+            <h1>Dashboard</h1>
+
+            <p>
+                Welcome back, Administrator.
+            </p>
+
+        </div>
+
+
+        <div class="admin-profile">
+
+            <div class="profile-icon">
+
+                <i class="fas fa-user"></i>
+
+            </div>
+
+            <span>
+                Administrator
+            </span>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =========================
+         STATISTICS
+    ========================== -->
+
+    <section class="statistics">
+
+
+        <!-- MEMBERS -->
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+
+                <i class="fas fa-users"></i>
+
+            </div>
+
+            <div>
+
+                <p>Choir Members</p>
+
+                <h2 id="memberCount">
+                    0
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <!-- SONGS -->
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+
+                <i class="fas fa-music"></i>
+
+            </div>
+
+            <div>
+
+                <p>Songs</p>
+
+                <h2 id="songCount">
+                    0
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <!-- ACTIVITIES -->
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+
+                <i class="fas fa-calendar-days"></i>
+
+            </div>
+
+            <div>
+
+                <p>Activities</p>
+
+                <h2 id="activityCount">
+                    0
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <!-- SERVICES -->
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+
+                <i class="fas fa-church"></i>
+
+            </div>
+
+            <div>
+
+                <p>Services</p>
+
+                <h2 id="serviceCount">
+                    0
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <!-- GALLERY -->
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+
+                <i class="fas fa-images"></i>
+
+            </div>
+
+            <div>
+
+                <p>Gallery Photos</p>
+
+                <h2 id="galleryCount">
+                    0
+                </h2>
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =========================
+         QUICK ACTIONS
+    ========================== -->
+
+    <section class="dashboard-section">
+
+
+        <div class="section-title">
+
+            <h2>
+                Quick Actions
+            </h2>
+
+            <p>
+                Manage your church choir website.
+            </p>
+
+        </div>
+
+
+        <div class="quick-actions">
+
+
+            <a href="/admin/members.html"
+               class="quick-action">
+
+                <i class="fas fa-user-plus"></i>
+
+                <span>
+                    Add Member
+                </span>
+
+            </a>
+
+
+            <a href="/admin/songs.html"
+               class="quick-action">
+
+                <i class="fas fa-cloud-arrow-up"></i>
+
+                <span>
+                    Upload Song
+                </span>
+
+            </a>
+
+
+            <a href="/admin/activities.html"
+               class="quick-action">
+
+                <i class="fas fa-calendar-plus"></i>
+
+                <span>
+                    Add Activity
+                </span>
+
+            </a>
+
+
+            <a href="/admin/gallery.html"
+               class="quick-action">
+
+                <i class="fas fa-image"></i>
+
+                <span>
+                    Upload Photo
+                </span>
+
+            </a>
+
+
+            <a href="/admin/services.html"
+               class="quick-action">
+
+                <i class="fas fa-church"></i>
+
+                <span>
+                    Add Service
+                </span>
+
+            </a>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         RECENT ACTIVITY
+    ========================== -->
+
+    <section class="dashboard-section">
+
+
+        <div class="section-title">
+
+            <h2>
+                System Overview
+            </h2>
+
+            <p>
+                Current content stored in your
+                choir database.
+            </p>
+
+        </div>
+
+
+        <div class="overview-box">
+
+
+            <div class="overview-item">
+
+                <i class="fas fa-database"></i>
+
+                <div>
+
+                    <strong>
+                        Local Database
+                    </strong>
+
+                    <p>
+                        SQLite
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="overview-item">
+
+                <i class="fas fa-server"></i>
+
+                <div>
+
+                    <strong>
+                        Backend
+                    </strong>
+
+                    <p>
+                        Node.js + Express
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="overview-item">
+
+                <i class="fas fa-globe"></i>
+
+                <div>
+
+                    <strong>
+                        Website
+                    </strong>
+
+                    <p>
+                        Running locally
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer class="dashboard-footer">
+
+        <p>
+            © 2026 Grace Fellowship Choir
+        </p>
+
+        <p>
+            Church Choir Management System
+        </p>
+
+    </footer>
+
+
+</main>
+```
+
+</div>
+
+<!-- =========================
+     DASHBOARD JAVASCRIPT
+========================== -->
+
+<script>
+
+async function loadDashboardStats() {
+
+    try {
+
+        const response =
+            await fetch("/api/stats");
+
+
+        const data =
+            await response.json();
+
+
+        if (!data.success) {
+
+            console.error(
+                "Statistics request failed."
+            );
+
+            return;
+
+        }
+
+
+        /*
+         * MEMBERS
+         */
+
+        document.getElementById(
+            "memberCount"
+        ).textContent =
+            data.stats.members;
+
+
+        /*
+         * SONGS
+         */
+
+        document.getElementById(
+            "songCount"
+        ).textContent =
+            data.stats.songs;
+
+
+        /*
+         * ACTIVITIES
+         */
+
+        document.getElementById(
+            "activityCount"
+        ).textContent =
+            data.stats.activities;
+
+
+        /*
+         * SERVICES
+         */
+
+        document.getElementById(
+            "serviceCount"
+        ).textContent =
+            data.stats.services;
+
+
+        /*
+         * GALLERY
+         */
+
+        document.getElementById(
+            "galleryCount"
+        ).textContent =
+            data.stats.gallery;
+
+
+    } catch (error) {
+
+        console.error(
+            "Could not load dashboard statistics:",
+            error
+        );
+
+    }
+
+}
+
+
+/*
+ * Load statistics when
+ * dashboard opens.
+ */
+
+loadDashboardStats();
+
+
+/*
+ * Refresh statistics every
+ * 30 seconds.
+ */
+
+setInterval(
+    loadDashboardStats,
+    30000
+);
+
+</script>
+
+</body>
+
+</html>

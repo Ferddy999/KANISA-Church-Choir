@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Services | Church Choir Admin</title>
+
+    <link rel="stylesheet" href="css/admin.css">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .add-btn {
+            background: #071d35;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .services-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        .services-table th,
+        .services-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .services-table th {
+            background: #071d35;
+            color: white;
+        }
+
+        .delete-btn {
+            background: #b42318;
+            color: white;
+            border: none;
+            padding: 7px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.55);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            width: 90%;
+            max-width: 520px;
+            padding: 30px;
+            border-radius: 10px;
+        }
+
+        .modal-content input,
+        .modal-content textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 7px 0 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .modal-content textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .save-btn {
+            background: #071d35;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .close-btn {
+            float: right;
+            border: none;
+            background: none;
+            font-size: 22px;
+            cursor: pointer;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-logo">
+
+            <div class="dashboard-logo">✝</div>
+
+            <div>
+                <h2>Grace Fellowship</h2>
+                <p>Choir Admin</p>
+            </div>
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <a href="/admin/dashboard.html">
+                <i class="fas fa-chart-line"></i>
+                Dashboard
+            </a>
+
+            <a href="/admin/members.html">
+                <i class="fas fa-users"></i>
+                Members
+            </a>
+
+            <a href="/admin/songs.html">
+                <i class="fas fa-music"></i>
+                Songs
+            </a>
+
+            <a href="/admin/activities.html">
+                <i class="fas fa-calendar"></i>
+                Activities
+            </a>
+
+            <a href="/admin/services.html"
+               class="active">
+                <i class="fas fa-church"></i>
+                Services
+            </a>
+
+           <a href="/admin/gallery.html">
+                <i class="fas fa-images"></i>
+                Gallery
+            </a>
+
+        </nav>
+
+
+        <a href="/admin/login.html" class="logout">
+            Logout
+        </a>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+
+    <main class="main-content">
+
+        <div class="page-header">
+
+            <div>
+
+                <h1>Church Services</h1>
+
+                <p>
+                    Manage church and choir services.
+                </p>
+
+            </div>
+
+            <button class="add-btn"
+                    onclick="openModal()">
+
+                + Add Service
+
+            </button>
+
+        </div>
+
+
+        <section class="dashboard-section">
+
+            <table class="services-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Time</th>
+                        <th>Location</th>
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="servicesList">
+
+                    <tr>
+
+                        <td colspan="5">
+                            Loading services...
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- ADD SERVICE MODAL -->
+
+<div class="modal" id="serviceModal">
+
+    <div class="modal-content">
+
+        <button class="close-btn"
+                onclick="closeModal()">
+            ×
+        </button>
+
+        <h2>Add Church Service</h2>
+
+        <br>
+
+
+        <form id="serviceForm">
+
+            <label>Service Title</label>
+
+            <input
+                type="text"
+                id="title"
+                placeholder="e.g. Sunday Worship"
+                required
+            >
+
+
+            <label>Description</label>
+
+            <textarea
+                id="description"
+                placeholder="Describe the service"
+            ></textarea>
+
+
+            <label>Service Time</label>
+
+            <input
+                type="text"
+                id="service_time"
+                placeholder="e.g. Sunday 9:00 AM"
+            >
+
+
+            <label>Location</label>
+
+            <input
+                type="text"
+                id="location"
+                placeholder="e.g. Main Sanctuary"
+            >
+
+
+            <button
+                type="submit"
+                class="save-btn">
+
+                Save Service
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<script>
+
+async function loadServices() {
+
+    try {
+
+        const response =
+            await fetch("/api/services");
+
+        const data =
+            await response.json();
+
+        const list =
+            document.getElementById("servicesList");
+
+
+        if (!data.success) {
+
+            list.innerHTML =
+                "<tr><td colspan='5'>Failed to load services.</td></tr>";
+
+            return;
+
+        }
+
+
+        if (data.services.length === 0) {
+
+            list.innerHTML =
+                "<tr><td colspan='5'>No services yet.</td></tr>";
+
+            return;
+
+        }
+
+
+        list.innerHTML = "";
+
+
+        data.services.forEach(service => {
+
+            const row =
+                document.createElement("tr");
+
+
+            row.innerHTML = `
+
+                <td>
+                    <strong>
+                        ${service.title}
+                    </strong>
+                </td>
+
+                <td>
+                    ${service.description || "—"}
+                </td>
+
+                <td>
+                    ${service.service_time || "—"}
+                </td>
+
+                <td>
+                    ${service.location || "—"}
+                </td>
+
+                <td>
+
+                    <button
+                        class="delete-btn"
+                        onclick="deleteService(${service.id})">
+
+                        Delete
+
+                    </button>
+
+                </td>
+
+            `;
+
+
+            list.appendChild(row);
+
+        });
+
+
+    } catch (error) {
+
+        console.error(error);
+
+    }
+
+}
+
+
+function openModal() {
+
+    document.getElementById("serviceModal")
+        .style.display = "flex";
+
+}
+
+
+function closeModal() {
+
+    document.getElementById("serviceModal")
+        .style.display = "none";
+
+}
+
+
+document
+    .getElementById("serviceForm")
+    .addEventListener("submit", async function(event) {
+
+        event.preventDefault();
+
+
+        const service = {
+
+            title:
+                document.getElementById("title").value,
+
+            description:
+                document.getElementById("description").value,
+
+            service_time:
+                document.getElementById("service_time").value,
+
+            location:
+                document.getElementById("location").value
+
+        };
+
+
+        const response =
+            await fetch("/api/services", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify(service)
+
+            });
+
+
+        const data =
+            await response.json();
+
+
+        if (data.success) {
+
+            alert(
+                "Service added successfully!"
+            );
+
+            this.reset();
+
+            closeModal();
+
+            loadServices();
+
+        } else {
+
+            alert(data.message);
+
+        }
+
+    });
+
+
+async function deleteService(id) {
+
+    if (!confirm(
+        "Delete this service?"
+    )) {
+        return;
+    }
+
+
+    const response =
+        await fetch(
+            `/api/services/${id}`,
+            {
+                method: "DELETE"
+            }
+        );
+
+
+    const data =
+        await response.json();
+
+
+    if (data.success) {
+
+        loadServices();
+
+    } else {
+
+        alert(data.message);
+
+    }
+
+}
+
+
+loadServices();
+
+</script>
+
+</body>
+
+</html>

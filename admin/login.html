@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Login | Church Choir</title>
+
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+
+<body>
+
+    <div class="login-container">
+
+        <div class="login-card">
+
+            <div class="login-logo">
+                <span>✝</span>
+            </div>
+
+            <h1>Church Choir</h1>
+
+            <p class="subtitle">Administrator Login</p>
+
+            <form id="loginForm">
+
+                <div class="input-group">
+
+                    <label for="username">Username</label>
+
+                    <input
+                        type="text"
+                        id="username"
+                        placeholder="Enter username"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label for="password">Password</label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Enter password"
+                        required
+                    >
+
+                </div>
+
+
+                <button type="submit">
+                    Login
+                </button>
+
+                <p id="message"></p>
+
+            </form>
+
+            <a href="/" class="back-link">
+                ← Back to Website
+            </a>
+
+        </div>
+
+    </div>
+
+    <script src="js/admin-login.js"></script>
+
+</body>
+
+</html>

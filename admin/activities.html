@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+```
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Activities | Choir Admin</title>
+
+<link rel="stylesheet" href="css/admin.css">
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        gap: 20px;
+    }
+
+    .page-header h1 {
+        margin-bottom: 5px;
+    }
+
+    .page-header p {
+        margin: 0;
+        color: #777;
+    }
+
+    .add-button {
+        border: none;
+        padding: 12px 20px;
+        border-radius: 6px;
+        cursor: pointer;
+        background: #10243a;
+        color: white;
+        font-weight: 600;
+    }
+
+    .add-button:hover {
+        opacity: .9;
+    }
+
+    .activities-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
+    }
+
+    .activity-card {
+        background: white;
+        border-radius: 10px;
+        padding: 25px;
+        box-shadow: 0 5px 25px rgba(0,0,0,.06);
+        border-left: 4px solid #10243a;
+    }
+
+    .activity-icon {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #eef2f6;
+        margin-bottom: 18px;
+        font-size: 18px;
+    }
+
+    .activity-card h3 {
+        margin-bottom: 10px;
+    }
+
+    .activity-description {
+        color: #777;
+        line-height: 1.6;
+        font-size: 14px;
+        margin-bottom: 18px;
+    }
+
+    .activity-details {
+        margin-bottom: 20px;
+    }
+
+    .activity-detail {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 9px;
+        font-size: 14px;
+    }
+
+    .activity-detail i {
+        width: 18px;
+    }
+
+    .activity-actions {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .delete-btn {
+        border: none;
+        background: #f5dddd;
+        color: #a32626;
+        padding: 8px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .delete-btn:hover {
+        background: #e9c5c5;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #777;
+        background: white;
+        border-radius: 10px;
+    }
+
+    .empty-state i {
+        font-size: 40px;
+        margin-bottom: 15px;
+    }
+
+    .modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,.6);
+        z-index: 2000;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .modal.active {
+        display: flex;
+    }
+
+    .modal-content {
+        background: white;
+        width: min(550px, 100%);
+        max-height: 90vh;
+        overflow-y: auto;
+        border-radius: 10px;
+        padding: 30px;
+    }
+
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+    }
+
+    .close-modal {
+        border: none;
+        background: transparent;
+        font-size: 25px;
+        cursor: pointer;
+    }
+
+    .form-group {
+        margin-bottom: 18px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 7px;
+        font-weight: 600;
+        font-size: 13px;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        outline: none;
+        font-family: inherit;
+        box-sizing: border-box;
+    }
+
+    .form-group textarea {
+        min-height: 100px;
+        resize: vertical;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+        border-color: #10243a;
+    }
+
+    .submit-btn {
+        width: 100%;
+        padding: 13px;
+        border: none;
+        border-radius: 5px;
+        background: #10243a;
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .submit-btn:hover {
+        opacity: .9;
+    }
+
+    .status-message {
+        margin-bottom: 15px;
+        padding: 12px;
+        border-radius: 5px;
+        display: none;
+    }
+
+    .status-message.success {
+        display: block;
+        background: #e4f5e8;
+        color: #176b2d;
+    }
+
+    .status-message.error {
+        display: block;
+        background: #f8e2e2;
+        color: #9b2222;
+    }
+
+    @media (max-width: 1000px) {
+
+        .activities-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+    }
+
+    @media (max-width: 650px) {
+
+        .page-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .activities-grid {
+            grid-template-columns: 1fr;
+        }
+
+    }
+
+</style>
+```
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+```
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+    <div class="sidebar-logo">
+
+        <div class="dashboard-logo">
+            ✝
+        </div>
+
+        <div>
+
+            <h2>Grace Fellowship</h2>
+
+            <p>Choir Admin</p>
+
+        </div>
+
+    </div>
+
+
+    <nav class="sidebar-nav">
+
+        <a href="/admin/dashboard.html">
+
+            <i class="fas fa-chart-line"></i>
+
+            Dashboard
+
+        </a>
+
+
+        <a href="/admin/members.html">
+
+            <i class="fas fa-users"></i>
+
+            Members
+
+        </a>
+
+
+        <a href="/admin/songs.html">
+
+            <i class="fas fa-music"></i>
+
+            Songs
+
+        </a>
+
+
+        <a href="/admin/activities.html"
+           class="active">
+
+            <i class="fas fa-calendar"></i>
+
+            Activities
+
+        </a>
+
+
+        <a href="/admin/services.html">
+
+            <i class="fas fa-church"></i>
+
+            Services
+
+        </a>
+
+
+        <a href="/admin/gallery.html">
+
+            <i class="fas fa-images"></i>
+
+            Gallery
+
+        </a>
+
+
+        <a href="/admin/settings.html">
+
+            <i class="fas fa-cog"></i>
+
+            Settings
+
+        </a>
+
+    </nav>
+
+
+    <a href="/admin/login.html"
+       class="logout">
+
+        <i class="fas fa-right-from-bracket"></i>
+
+        Logout
+
+    </a>
+
+</aside>
+
+
+
+<!-- MAIN CONTENT -->
+
+<main class="main-content">
+
+
+    <div class="page-header">
+
+        <div>
+
+            <h1>Choir Activities</h1>
+
+            <p>
+                Manage upcoming choir activities and events.
+            </p>
+
+        </div>
+
+
+        <button class="add-button"
+                onclick="openModal()">
+
+            <i class="fas fa-calendar-plus"></i>
+
+            Add Activity
+
+        </button>
+
+    </div>
+
+
+    <div id="statusMessage"
+         class="status-message">
+    </div>
+
+
+    <div class="activities-grid"
+         id="activitiesList">
+
+        <div class="empty-state">
+
+            <i class="fas fa-spinner fa-spin"></i>
+
+            <p>Loading activities...</p>
+
+        </div>
+
+    </div>
+
+
+</main>
+```
+
+</div>
+
+<!-- ADD ACTIVITY MODAL -->
+
+<div class="modal"
+     id="activityModal">
+
+```
+<div class="modal-content">
+
+
+    <div class="modal-header">
+
+        <h2>Add New Activity</h2>
+
+        <button class="close-modal"
+                type="button"
+                onclick="closeModal()">
+
+            &times;
+
+        </button>
+
+    </div>
+
+
+    <form id="activityForm">
+
+
+        <!-- TITLE -->
+
+        <div class="form-group">
+
+            <label for="title">
+                Activity Title *
+            </label>
+
+            <input
+                type="text"
+                id="title"
+                placeholder="e.g. Choir Rehearsal"
+                required>
+
+        </div>
+
+
+        <!-- DESCRIPTION -->
+
+        <div class="form-group">
+
+            <label for="description">
+                Description
+            </label>
+
+            <textarea
+                id="description"
+                placeholder="Describe the activity"></textarea>
+
+        </div>
+
+
+        <!-- DATE -->
+
+        <div class="form-group">
+
+            <label for="event_date">
+                Event Date
+            </label>
+
+            <input
+                type="date"
+                id="event_date">
+
+        </div>
+
+
+        <!-- TIME -->
+
+        <div class="form-group">
+
+            <label for="event_time">
+                Event Time
+            </label>
+
+            <input
+                type="time"
+                id="event_time">
+
+        </div>
+
+
+        <!-- LOCATION -->
+
+        <div class="form-group">
+
+            <label for="location">
+                Location
+            </label>
+
+            <input
+                type="text"
+                id="location"
+                placeholder="e.g. Church Hall">
+
+        </div>
+
+
+        <!-- SUBMIT -->
+
+        <button
+            type="submit"
+            class="submit-btn">
+
+            <i class="fas fa-calendar-plus"></i>
+
+            Add Activity
+
+        </button>
+
+
+    </form>
+
+</div>
+```
+
+</div>
+
+<script>
+
+
+// ==========================================
+// LOAD ACTIVITIES
+// ==========================================
+
+async function loadActivities() {
+
+    const container =
+        document.getElementById("activitiesList");
+
+
+    try {
+
+        const response =
+            await fetch("/api/activities");
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok || !data.success) {
+
+            throw new Error(
+                data.message ||
+                "Unable to load activities."
+            );
+
+        }
+
+
+        if (
+            !data.activities ||
+            data.activities.length === 0
+        ) {
+
+            container.innerHTML = `
+
+                <div class="empty-state">
+
+                    <i class="fas fa-calendar"></i>
+
+                    <h3>No activities yet</h3>
+
+                    <p>
+                        Add your first choir activity.
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        container.innerHTML = "";
+
+
+        data.activities.forEach(activity => {
+
+            const card =
+                document.createElement("article");
+
+
+            card.className =
+                "activity-card";
+
+
+            card.innerHTML = `
+
+                <div class="activity-icon">
+
+                    <i class="fas fa-calendar-day"></i>
+
+                </div>
+
+
+                <h3>
+                    ${escapeHTML(activity.title)}
+                </h3>
+
+
+                ${
+                    activity.description
+                    ? `
+                        <p class="activity-description">
+                            ${escapeHTML(
+                                activity.description
+                            )}
+                        </p>
+                    `
+                    : ""
+                }
+
+
+                <div class="activity-details">
+
+
+                    ${
+                        activity.event_date
+                        ? `
+                            <div class="activity-detail">
+
+                                <i class="fas fa-calendar"></i>
+
+                                <span>
+                                    ${escapeHTML(
+                                        formatDate(
+                                            activity.event_date
+                                        )
+                                    )}
+                                </span>
+
+                            </div>
+                        `
+                        : ""
+                    }
+
+
+                    ${
+                        activity.event_time
+                        ? `
+                            <div class="activity-detail">
+
+                                <i class="fas fa-clock"></i>
+
+                                <span>
+                                    ${escapeHTML(
+                                        formatTime(
+                                            activity.event_time
+                                        )
+                                    )}
+                                </span>
+
+                            </div>
+                        `
+                        : ""
+                    }
+
+
+                    ${
+                        activity.location
+                        ? `
+                            <div class="activity-detail">
+
+                                <i class="fas fa-location-dot"></i>
+
+                                <span>
+                                    ${escapeHTML(
+                                        activity.location
+                                    )}
+                                </span>
+
+                            </div>
+                        `
+                        : ""
+                    }
+
+
+                </div>
+
+
+                <div class="activity-actions">
+
+                    <button
+                        type="button"
+                        class="delete-btn"
+                        onclick="deleteActivity(${activity.id})">
+
+                        <i class="fas fa-trash"></i>
+
+                        Delete
+
+                    </button>
+
+                </div>
+
+            `;
+
+
+            container.appendChild(card);
+
+        });
+
+
+    } catch (error) {
+
+        console.error(
+            "Load activities error:",
+            error
+        );
+
+
+        container.innerHTML = `
+
+            <div class="empty-state">
+
+                <i class="fas fa-triangle-exclamation"></i>
+
+                <h3>Unable to load activities</h3>
+
+                <p>
+                    ${escapeHTML(error.message)}
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+
+// ==========================================
+// ADD ACTIVITY
+// ==========================================
+
+document
+    .getElementById("activityForm")
+    .addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+
+            const activity = {
+
+                title:
+                    document
+                        .getElementById("title")
+                        .value
+                        .trim(),
+
+                description:
+                    document
+                        .getElementById("description")
+                        .value
+                        .trim(),
+
+                event_date:
+                    document
+                        .getElementById("event_date")
+                        .value,
+
+                event_time:
+                    document
+                        .getElementById("event_time")
+                        .value,
+
+                location:
+                    document
+                        .getElementById("location")
+                        .value
+                        .trim()
+
+            };
+
+
+            if (!activity.title) {
+
+                showMessage(
+                    "Please enter an activity title.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/api/activities",
+                        {
+
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body:
+                                JSON.stringify(activity)
+
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (!response.ok || !data.success) {
+
+                    throw new Error(
+                        data.message ||
+                        "Failed to add activity."
+                    );
+
+                }
+
+
+                showMessage(
+                    "Activity added successfully!",
+                    "success"
+                );
+
+
+                document
+                    .getElementById("activityForm")
+                    .reset();
+
+
+                closeModal();
+
+
+                await loadActivities();
+
+
+            } catch (error) {
+
+                console.error(
+                    "Add activity error:",
+                    error
+                );
+
+
+                showMessage(
+                    error.message,
+                    "error"
+                );
+
+            }
+
+        }
+    );
+
+
+
+// ==========================================
+// DELETE ACTIVITY
+// ==========================================
+
+async function deleteActivity(id) {
+
+
+    const confirmed =
+        confirm(
+            "Are you sure you want to delete this activity?"
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                `/api/activities/${id}`,
+                {
+                    method: "DELETE"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok || !data.success) {
+
+            throw new Error(
+                data.message ||
+                "Failed to delete activity."
+            );
+
+        }
+
+
+        showMessage(
+            "Activity deleted successfully.",
+            "success"
+        );
+
+
+        await loadActivities();
+
+
+    } catch (error) {
+
+        console.error(
+            "Delete activity error:",
+            error
+        );
+
+
+        showMessage(
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+
+// ==========================================
+// DATE FORMAT
+// ==========================================
+
+function formatDate(value) {
+
+    if (!value) {
+        return "";
+    }
+
+
+    const parts =
+        value.split("-");
+
+
+    if (parts.length === 3) {
+
+        return `${parts[2]}/${parts[1]}/${parts[0]}`;
+
+    }
+
+
+    return value;
+
+}
+
+
+
+// ==========================================
+// TIME FORMAT
+// ==========================================
+
+function formatTime(value) {
+
+    if (!value) {
+        return "";
+    }
+
+
+    const parts =
+        value.split(":");
+
+
+    if (parts.length < 2) {
+        return value;
+    }
+
+
+    let hour =
+        parseInt(parts[0], 10);
+
+
+    const minute =
+        parts[1];
+
+
+    const period =
+        hour >= 12 ? "PM" : "AM";
+
+
+    hour =
+        hour % 12 || 12;
+
+
+    return `${hour}:${minute} ${period}`;
+
+}
+
+
+
+// ==========================================
+// OPEN MODAL
+// ==========================================
+
+function openModal() {
+
+    document
+        .getElementById("activityModal")
+        .classList.add("active");
+
+}
+
+
+
+// ==========================================
+// CLOSE MODAL
+// ==========================================
+
+function closeModal() {
+
+    document
+        .getElementById("activityModal")
+        .classList.remove("active");
+
+}
+
+
+
+// ==========================================
+// CLOSE WHEN CLICKING OUTSIDE
+// ==========================================
+
+document
+    .getElementById("activityModal")
+    .addEventListener(
+        "click",
+        function(event) {
+
+            if (event.target === this) {
+
+                closeModal();
+
+            }
+
+        }
+    );
+
+
+
+// ==========================================
+// SHOW MESSAGE
+// ==========================================
+
+function showMessage(message, type) {
+
+    const element =
+        document.getElementById("statusMessage");
+
+
+    element.textContent =
+        message;
+
+
+    element.className =
+        `status-message ${type}`;
+
+
+    setTimeout(
+        () => {
+
+            element.className =
+                "status-message";
+
+        },
+        4000
+    );
+
+}
+
+
+
+// ==========================================
+// SECURITY
+// ==========================================
+
+function escapeHTML(value) {
+
+    const div =
+        document.createElement("div");
+
+
+    div.textContent =
+        value ?? "";
+
+
+    return div.innerHTML;
+
+}
+
+
+
+// ==========================================
+// INITIAL LOAD
+// ==========================================
+
+loadActivities();
+
+</script>
+
+</body>
+
+</html>

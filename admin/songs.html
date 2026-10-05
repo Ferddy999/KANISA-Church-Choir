@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+```
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Songs | Choir Admin</title>
+
+<link rel="stylesheet"
+      href="css/admin.css">
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        gap: 20px;
+    }
+
+    .page-header h1 {
+        margin-bottom: 5px;
+    }
+
+    .page-header p {
+        margin: 0;
+        color: #777;
+    }
+
+    .add-button {
+        border: none;
+        padding: 12px 20px;
+        border-radius: 6px;
+        cursor: pointer;
+        background: #10243a;
+        color: white;
+        font-weight: 600;
+    }
+
+    .add-button:hover {
+        opacity: .9;
+    }
+
+    .songs-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
+    }
+
+    .song-card {
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 25px rgba(0,0,0,.06);
+    }
+
+    .song-cover {
+        width: 100%;
+        height: 190px;
+        object-fit: cover;
+        display: block;
+    }
+
+    .song-content {
+        padding: 20px;
+    }
+
+    .song-content h3 {
+        margin-bottom: 8px;
+    }
+
+    .song-category {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 20px;
+        background: #eef2f6;
+        font-size: 12px;
+        font-weight: 600;
+        margin-bottom: 12px;
+    }
+
+    .song-description {
+        color: #777;
+        font-size: 14px;
+        line-height: 1.6;
+        margin-bottom: 15px;
+    }
+
+    .audio-player {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+    .song-actions {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .delete-btn {
+        border: none;
+        background: #f5dddd;
+        color: #a32626;
+        padding: 8px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .delete-btn:hover {
+        background: #e9c5c5;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #777;
+        background: white;
+        border-radius: 10px;
+    }
+
+    .empty-state i {
+        font-size: 40px;
+        margin-bottom: 15px;
+    }
+
+    .modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,.6);
+        z-index: 2000;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .modal.active {
+        display: flex;
+    }
+
+    .modal-content {
+        background: white;
+        width: min(550px, 100%);
+        max-height: 90vh;
+        overflow-y: auto;
+        border-radius: 10px;
+        padding: 30px;
+    }
+
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+    }
+
+    .close-modal {
+        border: none;
+        background: transparent;
+        font-size: 25px;
+        cursor: pointer;
+    }
+
+    .form-group {
+        margin-bottom: 18px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 7px;
+        font-weight: 600;
+        font-size: 13px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        outline: none;
+        font-family: inherit;
+    }
+
+    .form-group textarea {
+        min-height: 100px;
+        resize: vertical;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+        border-color: #10243a;
+    }
+
+    .submit-btn {
+        width: 100%;
+        padding: 13px;
+        border: none;
+        border-radius: 5px;
+        background: #10243a;
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .status-message {
+        margin-bottom: 15px;
+        padding: 12px;
+        border-radius: 5px;
+        display: none;
+    }
+
+    .status-message.success {
+        display: block;
+        background: #e4f5e8;
+        color: #176b2d;
+    }
+
+    .status-message.error {
+        display: block;
+        background: #f8e2e2;
+        color: #9b2222;
+    }
+
+    @media (max-width: 1000px) {
+
+        .songs-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+    }
+
+    @media (max-width: 650px) {
+
+        .page-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .songs-grid {
+            grid-template-columns: 1fr;
+        }
+
+    }
+
+</style>
+```
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+```
+<!-- =========================
+     SIDEBAR
+========================== -->
+
+<aside class="sidebar">
+
+    <div class="sidebar-logo">
+
+        <div class="dashboard-logo">
+            ✝
+        </div>
+
+        <div>
+
+            <h2>Grace Fellowship</h2>
+
+            <p>Choir Admin</p>
+
+        </div>
+
+    </div>
+
+
+    <nav class="sidebar-nav">
+
+        <a href="/admin/dashboard.html">
+
+            <i class="fas fa-chart-line"></i>
+
+            Dashboard
+
+        </a>
+
+
+        <a href="/admin/members.html">
+
+            <i class="fas fa-users"></i>
+
+            Members
+
+        </a>
+
+
+        <a href="/admin/songs.html"
+           class="active">
+
+            <i class="fas fa-music"></i>
+
+            Songs
+
+        </a>
+
+
+        <a href="/admin/activities.html">
+
+            <i class="fas fa-calendar"></i>
+
+            Activities
+
+        </a>
+
+
+        <a href="/admin/services.html">
+
+            <i class="fas fa-church"></i>
+
+            Services
+
+        </a>
+
+
+        <a href="/admin/gallery.html">
+
+            <i class="fas fa-images"></i>
+
+            Gallery
+
+        </a>
+
+
+        <a href="/admin/settings.html">
+
+            <i class="fas fa-cog"></i>
+
+            Settings
+
+        </a>
+
+    </nav>
+
+
+    <a href="/admin/login.html"
+       class="logout">
+
+        <i class="fas fa-right-from-bracket"></i>
+
+        Logout
+
+    </a>
+
+</aside>
+
+
+
+<!-- =========================
+     MAIN CONTENT
+========================== -->
+
+<main class="main-content">
+
+
+    <div class="page-header">
+
+        <div>
+
+            <h1>Choir Songs</h1>
+
+            <p>
+                Manage songs and worship music.
+            </p>
+
+        </div>
+
+
+        <button class="add-button"
+                onclick="openModal()">
+
+            <i class="fas fa-plus"></i>
+
+            Add Song
+
+        </button>
+
+    </div>
+
+
+    <div id="statusMessage"
+         class="status-message">
+    </div>
+
+
+    <!-- SONGS -->
+
+    <div class="songs-grid"
+         id="songsList">
+
+        <div class="empty-state">
+
+            <i class="fas fa-spinner fa-spin"></i>
+
+            <p>
+                Loading songs...
+            </p>
+
+        </div>
+
+    </div>
+
+
+</main>
+```
+
+</div>
+
+<!-- =========================
+     ADD SONG MODAL
+========================== -->
+
+<div class="modal"
+     id="songModal">
+
+```
+<div class="modal-content">
+
+
+    <div class="modal-header">
+
+        <h2>
+            Add New Song
+        </h2>
+
+        <button class="close-modal"
+                onclick="closeModal()">
+
+            &times;
+
+        </button>
+
+    </div>
+
+
+    <form id="songForm">
+
+
+        <div class="form-group">
+
+            <label>
+                Song Title *
+            </label>
+
+            <input
+                type="text"
+                id="title"
+                placeholder="Enter song title"
+                required>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Category
+            </label>
+
+            <select id="category">
+
+                <option value="">
+                    Select category
+                </option>
+
+                <option value="Worship">
+                    Worship
+                </option>
+
+                <option value="Praise">
+                    Praise
+                </option>
+
+                <option value="Gospel">
+                    Gospel
+                </option>
+
+                <option value="Christmas">
+                    Christmas
+                </option>
+
+                <option value="Special">
+                    Special
+                </option>
+
+                <option value="Other">
+                    Other
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Description
+            </label>
+
+            <textarea
+                id="description"
+                placeholder="Enter a short description"></textarea>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Audio URL
+            </label>
+
+            <input
+                type="text"
+                id="audio"
+                placeholder="Enter audio file URL">
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Cover Image URL
+            </label>
+
+            <input
+                type="text"
+                id="cover_image"
+                placeholder="Enter cover image URL">
+
+        </div>
+
+
+        <button
+            type="submit"
+            class="submit-btn">
+
+            <i class="fas fa-music"></i>
+
+            Add Song
+
+        </button>
+
+
+    </form>
+
+</div>
+```
+
+</div>
+
+<script>
+
+
+// ===============================
+// LOAD SONGS
+// ===============================
+
+async function loadSongs() {
+
+    const container =
+        document.getElementById(
+            "songsList"
+        );
+
+
+    try {
+
+        const response =
+            await fetch("/api/songs");
+
+
+        const data =
+            await response.json();
+
+
+        if (!data.success) {
+
+            throw new Error(
+                "Unable to load songs."
+            );
+
+        }
+
+
+        if (
+            !data.songs ||
+            data.songs.length === 0
+        ) {
+
+            container.innerHTML = `
+
+                <div class="empty-state">
+
+                    <i class="fas fa-music"></i>
+
+                    <h3>
+                        No songs yet
+                    </h3>
+
+                    <p>
+                        Add your first choir song.
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        container.innerHTML = "";
+
+
+        data.songs.forEach(song => {
+
+
+            const card =
+                document.createElement("article");
+
+
+            card.className =
+                "song-card";
+
+
+            const cover =
+                song.cover_image &&
+                song.cover_image.length > 5 &&
+                song.cover_image !== ":"
+
+                ? song.cover_image
+
+                : "https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=800&q=80";
+
+
+            card.innerHTML = `
+
+                <img
+                    src="${cover}"
+                    alt="${escapeHTML(song.title)}"
+                    class="song-cover">
+
+
+                <div class="song-content">
+
+                    <span class="song-category">
+
+                        ${escapeHTML(
+                            song.category ||
+                            "Choir Song"
+                        )}
+
+                    </span>
+
+
+                    <h3>
+
+                        ${escapeHTML(
+                            song.title
+                        )}
+
+                    </h3>
+
+
+                    ${
+                        song.description
+                        ? `
+                            <p class="song-description">
+
+                                ${escapeHTML(
+                                    song.description
+                                )}
+
+                            </p>
+                        `
+                        : ""
+                    }
+
+
+                    ${
+                        song.audio
+                        ? `
+                            <audio
+                                controls
+                                class="audio-player"
+                                src="${escapeHTML(
+                                    song.audio
+                                )}">
+
+                            </audio>
+                        `
+                        : `
+                            <p class="song-description">
+
+                                No audio file attached.
+
+                            </p>
+                        `
+                    }
+
+
+                    <div class="song-actions">
+
+                        <button
+                            class="delete-btn"
+                            onclick="deleteSong(${song.id})">
+
+                            <i class="fas fa-trash"></i>
+
+                            Delete
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `;
+
+
+            container.appendChild(card);
+
+        });
+
+
+    } catch (error) {
+
+        console.error(error);
+
+
+        container.innerHTML = `
+
+            <div class="empty-state">
+
+                <i class="fas fa-triangle-exclamation"></i>
+
+                <h3>
+                    Unable to load songs
+                </h3>
+
+                <p>
+                    Check that the server is running.
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+
+// ===============================
+// ADD SONG
+// ===============================
+
+document.getElementById(
+    "songForm"
+).addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+
+        const song = {
+
+            title:
+                document.getElementById(
+                    "title"
+                ).value.trim(),
+
+            category:
+                document.getElementById(
+                    "category"
+                ).value.trim(),
+
+            description:
+                document.getElementById(
+                    "description"
+                ).value.trim(),
+
+            audio:
+                document.getElementById(
+                    "audio"
+                ).value.trim(),
+
+            cover_image:
+                document.getElementById(
+                    "cover_image"
+                ).value.trim()
+
+        };
+
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/songs",
+                    {
+
+                        method: "POST",
+
+                        headers: {
+
+                            "Content-Type":
+                                "application/json"
+
+                        },
+
+                        body:
+                            JSON.stringify(song)
+
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (!data.success) {
+
+                throw new Error(
+                    data.message ||
+                    "Failed to add song."
+                );
+
+            }
+
+
+            showMessage(
+                "Song added successfully!",
+                "success"
+            );
+
+
+            document.getElementById(
+                "songForm"
+            ).reset();
+
+
+            closeModal();
+
+
+            loadSongs();
+
+
+        } catch (error) {
+
+            console.error(error);
+
+
+            showMessage(
+                error.message,
+                "error"
+            );
+
+        }
+
+    }
+);
+
+
+
+// ===============================
+// DELETE SONG
+// ===============================
+
+async function deleteSong(id) {
+
+
+    const confirmed =
+        confirm(
+            "Are you sure you want to delete this song?"
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                `/api/songs/${id}`,
+                {
+                    method: "DELETE"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!data.success) {
+
+            throw new Error(
+                data.message ||
+                "Failed to delete song."
+            );
+
+        }
+
+
+        showMessage(
+            "Song deleted successfully.",
+            "success"
+        );
+
+
+        loadSongs();
+
+
+    } catch (error) {
+
+        console.error(error);
+
+
+        showMessage(
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+
+// ===============================
+// MODAL
+// ===============================
+
+function openModal() {
+
+    document
+        .getElementById("songModal")
+        .classList.add("active");
+
+}
+
+
+function closeModal() {
+
+    document
+        .getElementById("songModal")
+        .classList.remove("active");
+
+}
+
+
+
+// Close modal when clicking outside
+
+document
+    .getElementById("songModal")
+    .addEventListener(
+        "click",
+        function(event) {
+
+            if (
+                event.target === this
+            ) {
+
+                closeModal();
+
+            }
+
+        }
+    );
+
+
+
+// ===============================
+// MESSAGE
+// ===============================
+
+function showMessage(
+    message,
+    type
+) {
+
+    const element =
+        document.getElementById(
+            "statusMessage"
+        );
+
+
+    element.textContent =
+        message;
+
+
+    element.className =
+        `status-message ${type}`;
+
+
+    setTimeout(
+        () => {
+
+            element.className =
+                "status-message";
+
+        },
+        4000
+    );
+
+}
+
+
+
+// ===============================
+// SECURITY
+// ===============================
+
+function escapeHTML(value) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent =
+        value ?? "";
+
+    return div.innerHTML;
+
+}
+
+
+
+// ===============================
+// INITIAL LOAD
+// ===============================
+
+loadSongs();
+
+</script>
+
+</body>
+
+</html>
